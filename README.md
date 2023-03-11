@@ -11,16 +11,10 @@ The Terraform Graph Extension for Visual Studio Code is a plugin that allows you
 
 ## Usage
 
-Open a Terraform file in Visual Studio Code
-Click on the "Terraform Live Graph" icon on the left-hand side of the screen (or press Ctrl+Alt+G)
-A live graph of your Terraform code will appear on the right-hand side of the screen
-As you write your Terraform code, the graph will update in real-time to reflect your changes
-
-## Features
-
-1. Live graph of your Terraform code that updates in real-time as you write it
-2. Hover over a resource or module in the graph to see its details
-3. Click on a resource or module in the graph to jump to its definition in the code
+1. Open a Terraform file in Visual Studio Code
+2. Activate the extension by selecting "Terraform Graph View" from the Command Palette (`CMD+Shift+p`/`Ctrl+Shift+p`).
+3. A live graph of your Terraform code will appear on the right-hand side of the screen
+4. As you write your Terraform code, the graph will update in real-time to reflect your changes
 
 ## Requirements
 
