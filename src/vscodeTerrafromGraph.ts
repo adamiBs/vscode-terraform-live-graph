@@ -28,19 +28,22 @@ export default class VSCodeTerraformGraph {
 
     private static async getWebviewContent(workspaceFolder: string | undefined): Promise<string> {
       const graphData = await this.getTerraformGraphData(workspaceFolder);
-      let svgGraph = await this.streamToString(await toStream(graphData, { format: 'svg' }));
+      return this.buildWebViewHTML(await this.streamToString(await toStream(graphData, { format: 'svg' })));
+    }
+
+    private static buildWebViewHTML(svgGraph: string) : string {
       svgGraph = svgGraph.replace(/width=\"[0-9]+pt\"/, "width=\"width\"");
       const webpage = `<!DOCTYPE html>
-      <html lang="en">
-      <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Terraform Live Graph</title>
-      </head>
-      <body>
-        ${svgGraph}
-      </body>
-      </html>`;
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Terraform Live Graph</title>
+        </head>
+        <body>
+          ${svgGraph}
+        </body>
+        </html>`;
 
       return webpage;
     }
