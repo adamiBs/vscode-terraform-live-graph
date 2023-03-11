@@ -17,7 +17,7 @@
     "graph",
     "aws"
   ],
-  "categories": ["Visualization"],
+  "categories": ["Visualization", "Other", "Azure", "Programming Languages"],
   "icon": "images/icon.png",
   "galleryBanner": {
     "color": "#e7e3e1",
