@@ -6,9 +6,15 @@
   "engines": {
     "vscode": "^1.76.0"
   },
-  "categories": [
-    "Other"
-  ],
+  "author": {
+    "name": "adamiBs"
+  },
+  "categories": ["Other"],
+  "icon": "images/icon.png",
+  "galleryBanner": {
+    "color": "#e7e3e1",
+    "theme": "light"
+  },
   "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
