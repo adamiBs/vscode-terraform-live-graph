@@ -2,7 +2,7 @@
 
 The Terraform Graph Extension for Visual Studio Code is a plugin that allows you to generate a live Terraform graph as you code. This extension makes it easy to visualize your infrastructure and the relationships between resources, helping you to understand how your infrastructure is configured.
 
-![GIF of a demo of the extension](./imgs/tf-graph-demo.gif)
+![GIF of a demo of the extension](./images/tf-graph-demo.gif)
 
 ## Installation
 
