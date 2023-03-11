@@ -6,15 +6,29 @@
   "engines": {
     "vscode": "^1.76.0"
   },
+  "license": "MIT",
   "author": {
     "name": "adamiBs"
   },
-  "categories": ["Other"],
+  "keywords": [
+    "terraform",
+    "tf",
+    "diagram",
+    "graph",
+    "aws"
+  ],
+  "categories": ["Visualization"],
   "icon": "images/icon.png",
   "galleryBanner": {
     "color": "#e7e3e1",
     "theme": "light"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adamiBs/vscode-terraform-live-graph.git"
+  },
+  "homepage": "https://github.com/adamiBs/vscode-terraform-live-graph",
+  "bugs": "https://github.com/adamiBs/vscode-terraform-live-graph/issues",
   "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
