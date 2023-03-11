@@ -5,36 +5,65 @@ import { toStream } from 'ts-graphviz/adapter';
 const execFilePromise = promisify(execFile);
 
 export default class VSCodeTerraformGraph {
-    public static async graphExecutionWrapper(workspaceFolder: string | undefined): Promise<void> {
+    public static async graphExecutionWrapper(workspaceFolder: string | undefined, graphWebviewPanel: vscode.WebviewPanel): Promise<void> {
         if (!workspaceFolder) {
           vscode.window.showErrorMessage('No workspace folder found.');
           return;
         }
-      
-        const command = 'terraform';
-        const args = ['graph'];
-        const options = { cwd: workspaceFolder };
-        try {
-          const { stdout, stderr } = await execFilePromise(command, args, options) as { stdout: string, stderr: string };
-      
-          if (stderr) {
-            vscode.window.showWarningMessage(`'terraform graph' produced some output on stderr: ${stderr}`);
-          }
-          this.drawGraph(stdout);
-        } catch (err: any) {
-          vscode.window.showErrorMessage(`Failed to run 'terraform graph'. Please double check that terraform CLI is installed. Visit [README.md](https://github.com/adamiBs/vscode-terraform-live-graph) for installation instructions. Error message: ${err.message}`);
-        }
+        await this.updateWebviewContent(workspaceFolder, graphWebviewPanel);
+
+        this.registerFileWatcher(workspaceFolder, graphWebviewPanel);
       }
-    private static async drawGraph(graphData: string): Promise<void> {
-      const panel = vscode.window.createWebviewPanel(
-        'catCoding', // Identifies the type of the webview. Used internally
-        'Terraform Live Graph', // Title of the panel displayed to the user
-        vscode.ViewColumn.Two,
-        {} // Webview options. More on these later.
-      );
-      const webViewContent = await this.getWebviewContent(graphData);
-      panel.webview.html = webViewContent;
-      vscode.window.showInformationMessage(`'terraform graph' output:\n${graphData}`);
+
+      private static registerFileWatcher(workspaceFolder: string | undefined, graphWebviewPanel: vscode.WebviewPanel): void {
+        const fileWatcher = vscode.workspace.createFileSystemWatcher("**/*.tf");
+        fileWatcher.onDidChange(async () => {
+          await this.updateWebviewContent(workspaceFolder, graphWebviewPanel);
+        });
+      }
+    
+    private static async updateWebviewContent(workspaceFolder: string | undefined, graphWebviewPanel: vscode.WebviewPanel): Promise<void> {
+      graphWebviewPanel.webview.html = await this.getWebviewContent(workspaceFolder);
+    }
+
+    private static async getWebviewContent(workspaceFolder: string | undefined): Promise<string> {
+      const graphData = await this.getTerraformGraphData(workspaceFolder);
+      let svgGraph = await this.streamToString(await toStream(graphData, { format: 'svg' }));
+      svgGraph = svgGraph.replace(/width=\"[0-9]+pt\"/, "width=\"width\"");
+      const webpage = `<!DOCTYPE html>
+      <html lang="en">
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Terraform Live Graph</title>
+      </head>
+      <body>
+        ${svgGraph}
+      </body>
+      </html>`;
+
+      return webpage;
+    }
+
+    private static async getTerraformGraphData(workspaceFolder: string | undefined): Promise<string> {
+      const command = 'terraform';
+      const args = ['graph'];
+      const options = { cwd: workspaceFolder };
+      let res: string = '';
+      try {
+        const { stdout, stderr } = await execFilePromise(command, args, options) as { stdout: string, stderr: string };
+        res = stdout;
+    
+        if (stderr) {
+          vscode.window.showWarningMessage(`'terraform graph' produced some output on stderr: ${stderr}`);
+        }
+        
+      } catch (err: any) {
+        res = err;
+        vscode.window.showErrorMessage(`Failed to run 'terraform graph'. Please double check that terraform CLI is installed. Visit [README.md](https://github.com/adamiBs/vscode-terraform-live-graph) for installation instructions. Error message: ${err.message}`);
+      } finally {
+        return res;
+      }
     }
 
     private static async streamToString(stream: NodeJS.ReadableStream): Promise<string> {
@@ -44,24 +73,6 @@ export default class VSCodeTerraformGraph {
         stream.on('error', reject)
         stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')))
       })
-    }
-
-    private static async getWebviewContent(graphData: string): Promise<string> {
-      let g = await this.streamToString(await toStream(graphData, { format: 'svg' }));
-      g = g.replace(/width=\"[0-9]+pt\"/, "width=\"width\"");
-      const webpage = `<!DOCTYPE html>
-      <html lang="en">
-      <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width-width, initial-scale=1.0">
-          <title>Terraform Live Graph</title>
-      </head>
-      <body>
-        ${g}
-      </body>
-      </html>`
-
-      return webpage;
     }
 }
 
