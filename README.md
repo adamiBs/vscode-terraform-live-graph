@@ -1,7 +1,7 @@
 # Terraform Live Graph Extension for VSCode [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Live%20Terraform%20graph%20as%20you%20code!%20&url=https://github.com/adamiBs/vscode-terraform-live-graph&via=adambenshmuel&hashtags=terraform,aws,azure,gcp,vscode,visulization,extension)
 
-[![Price](https://img.shields.io/badge/price-FREE-0098f7.svg)](https://github.com/froala/design-blocks/blob/master/LICENSE)
-[![Price]([https://img.shields.io/visual-studio-marketplace/i/adamiBs.terraform-live-graph](https://img.shields.io/badge/installs-10%2B-yellowgreen))](https://marketplace.visualstudio.com/items?itemName=adamiBs.terraform-live-graph)
+[![Price](https://img.shields.io/badge/price-FREE-0098f7.svg)](./LICENSE.md)
+[![Downloads](https://img.shields.io/badge/installs-10%2B-yellowgreen)](https://marketplace.visualstudio.com/items?itemName=adamiBs.terraform-live-graph)
 
 
 The Terraform Graph Extension for Visual Studio Code is a plugin that allows you to generate a live Terraform graph as you code. This extension makes it easy to visualize your infrastructure and the relationships between resources, helping you to understand how your infrastructure is configured.
