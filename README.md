@@ -36,9 +36,9 @@ The Terraform Graph Extension for Visual Studio Code is a plugin that allows you
 
 ## Issues and Contributions
 
-If you encounter any issues or have any suggestions for improvements, please open an issue on the GitHub repository.
+If you encounter any issues or have any suggestions for improvements, please [open an issue](https://github.com/adamiBs/vscode-terraform-live-graph/issues/new/choose) on the GitHub repository.
 
-If you would like to contribute to the development of this extension, please fork the repository and submit a pull request.
+If you would like to contribute to the development of this extension, please [follow the instructions here](./CONTRIBUTING.md).
 
 ## License
 
