@@ -8,7 +8,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - Initial release
 
-## [0.0.3] 15-03-2023
+## [0.0.4] 15-03-2023
 
 ### Added
 
