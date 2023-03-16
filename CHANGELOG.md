@@ -4,9 +4,11 @@ All notable changes to the "terraform-live-graph" extension will be documented i
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [Unreleased]
+## [Unreleased 0.0.5]
 
-- Initial release
+### Added
+
+- Support of VS Code IDE `^1.75.1` (#9)
 
 ## [0.0.4] 15-03-2023
 

@@ -14,6 +14,7 @@ The Terraform Graph Extension for Visual Studio Code is a plugin that allows you
 
 1. Install `terraform` from: https://developer.hashicorp.com/terraform/downloads?product_intent=terraform
 2. Install `graphviz` from: https://graphviz.org/download/
+3. VS Code updated to at least `v1.75.1` of above.
 
 ### Extension Installation
 
