@@ -1,8 +1,5 @@
 import * as vscode from 'vscode';
-import { promisify } from 'util';
-import { execFile } from 'child_process';
-import { toStream } from 'ts-graphviz/adapter';
-const execFilePromise = promisify(execFile);
+import CommandExecutor from './commandExecutor';
 
 export default class VSCodeTerraformGraph {
     public static async graphExecutionWrapper(workspaceFolder: string | undefined, graphWebviewPanel: vscode.WebviewPanel): Promise<void> {
@@ -27,8 +24,9 @@ export default class VSCodeTerraformGraph {
     }
 
     private static async getWebviewContent(workspaceFolder: string | undefined): Promise<string> {
-      const graphData = await this.getTerraformGraphData(workspaceFolder);
-      return this.buildWebViewHTML(await this.streamToString(await toStream(graphData, { format: 'svg' })));
+      const graphData = await CommandExecutor.executeTerraformGraphCommand(workspaceFolder);
+      const dotSvg = await CommandExecutor.executeDotGraphCommand(graphData);
+      return this.buildWebViewHTML(dotSvg);
     }
 
     private static buildWebViewHTML(svgGraph: string) : string {
@@ -47,34 +45,5 @@ export default class VSCodeTerraformGraph {
 
       return webpage;
     }
-
-    private static async getTerraformGraphData(workspaceFolder: string | undefined): Promise<string> {
-      const command = 'terraform';
-      const args = ['graph'];
-      const options = { cwd: workspaceFolder };
-      let res: string = '';
-      try {
-        const { stdout, stderr } = await execFilePromise(command, args, options) as { stdout: string, stderr: string };
-        res = stdout;
-    
-        if (stderr) {
-          vscode.window.showWarningMessage(`'terraform graph' produced some output on stderr: ${stderr}`);
-        }
-        
-      } catch (err: any) {
-        res = err;
-        vscode.window.showErrorMessage(`Failed to run 'terraform graph'. Please double check that terraform CLI is installed. Visit [README.md](https://github.com/adamiBs/vscode-terraform-live-graph) for installation instructions. Error message: ${err.message}`);
-      } finally {
-        return res;
-      }
-    }
-
-    private static async streamToString(stream: NodeJS.ReadableStream) {
-      const chunks: Uint8Array[] = [];
-      for await (const chunk of stream) {
-          chunks.push(Buffer.from(chunk));
-      }
-      return Buffer.concat(chunks).toString("utf-8");
-  }
 }
 
